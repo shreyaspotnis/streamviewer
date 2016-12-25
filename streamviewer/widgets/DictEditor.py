@@ -84,7 +84,7 @@ class StringBox(QtGui.QLineEdit):
         self.setText(val)
 
     def handleTextChanged(self):
-        self.myValueChanged.emit(str(self.toPlainText()))
+        self.myValueChanged.emit(str(self.text()))
 
 class FileBox(QtGui.QWidget):
 
