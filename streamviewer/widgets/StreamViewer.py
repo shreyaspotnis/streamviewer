@@ -25,6 +25,8 @@ class StreamViewer(QtGui.QWidget):
         self.setupUi()
         self.loadSettings()
 
+        self.logger = Logger(self.stream_settings['log_folder'])
+
         self.timer = QtCore.QTimer()
         self.timer.setInterval(self.stream_settings['update_period_ms'])
         self.timer.timeout.connect(self.grabData)
@@ -66,6 +68,7 @@ class StreamViewer(QtGui.QWidget):
             self.stream_settings = ss_temp
             self.timer.setInterval(self.stream_settings['update_period_ms'])
             self.makeConnection()
+            self.logger = Logger(self.stream_settings['log_folder'])
 
     def loadSettings(self):
 
@@ -115,6 +118,9 @@ class StreamViewer(QtGui.QWidget):
 
             self.displayData()
 
+            if self.stream_settings['logdata']:
+                self.logger.log(self.timestamp, self.messagedata)
+
     def displayData(self):
         fmt = '%Y-%m-%d %H:%M:%S'
         dt_disp = datetime.datetime.fromtimestamp(self.timestamp).strftime(fmt)
@@ -149,3 +155,32 @@ class StreamViewer(QtGui.QWidget):
         self.settings.setValue('stream_settings', ss_string)
         self.settings.endGroup()
 
+
+class Logger():
+    """Logs the repr of a dictionary along with a timestamp in text files.
+
+    Data is logged in the logfolder with the filename 'yyyy-mm-dd.txt'."""
+
+    def __init__(self, logfolder):
+        self.logfolder = logfolder
+
+        self.last_write_date = datetime.datetime.now().date()
+        self.first_write = False
+
+        self.fp = None
+
+    def openCurrentLogfile(self):
+        if self.fp is not None:
+            self.fp.close()
+        # get today's date, which is also the filename
+        self.today = str(datetime.datetime.now().date())
+
+        fname = os.path.join(self.logfolder,self.today+'.txt')
+        self.fp = open(fname, 'a')
+
+    def log(self, timestamp, log_dict):
+        curr_date = datetime.datetime.now().date()
+        # check if we need to open a new file for writing
+        if curr_date != self.last_write_date or self.fp is None:
+            self.openCurrentLogfile()
+        self.fp.write('{0} {1}\n'.format(str(timestamp), repr(log_dict)))
