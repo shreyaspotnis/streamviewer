@@ -6,7 +6,7 @@ import zmq
 import time
 import datetime
 
-from widgets.DictEditor import DictEditor
+from DictEditor import DictEditor
 
 
 zmq_context = zmq.Context()
@@ -67,6 +67,7 @@ class StreamViewer(QtGui.QWidget):
             ss_temp['log_folder'] = new_folder
             self.stream_settings = ss_temp
             self.timer.setInterval(self.stream_settings['update_period_ms'])
+            self.updateSettingsLabel()
             self.makeConnection()
             self.logger = Logger(self.stream_settings['log_folder'])
 
@@ -159,7 +160,7 @@ class StreamViewer(QtGui.QWidget):
 class Logger():
     """Logs the repr of a dictionary along with a timestamp in text files.
 
-    Data is logged in the logfolder with the filename 'yyyy-mm-dd.txt'."""
+    Data is logged in the file logfolder/yyyy-mm-dd.txt"""
 
     def __init__(self, logfolder):
         self.logfolder = logfolder

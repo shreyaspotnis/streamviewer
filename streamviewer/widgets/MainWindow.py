@@ -4,7 +4,7 @@ import random
 from datetime import datetime
 import os
 
-from widgets.StreamViewer import StreamViewer
+from StreamViewer import StreamViewer
 
 main_package_dir = os.path.join(os.path.dirname(__file__), os.pardir)
 

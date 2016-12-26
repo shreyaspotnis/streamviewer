@@ -1,0 +1,22 @@
+from setuptools import setup
+
+setup(name='streamviewer',
+      version='0.1.2',
+      description='Reads data from a zeromq stream, displays it, plots it, and logs it.',
+      classifiers=['Development Status :: 3 - Alpha',
+                   'Environment :: X11 Applications :: Qt',
+                   'Intended Audience :: Science/Research',
+                   'License :: OSI Approved :: MIT License',
+                   'Operating System :: OS Independent',
+                   'Programming Language :: Python :: 2.7',
+                   'Topic :: Multimedia :: Graphics :: Viewers',
+                   'Topic :: Scientific/Engineering :: Physics',
+                   'Topic :: Scientific/Engineering :: Visualization'],
+      url='https://github.com/shreyaspotnis/streamviewer',
+      author='Shreyas Potnis',
+      author_email='shreyaspotnis@gmail.com',
+      license='MIT',
+      packages=['streamviewer'],
+      install_requires=['pyqtgraph', 'numpy', 'pyzmq'],
+      include_package_data=True,
+      zip_safe=False)
